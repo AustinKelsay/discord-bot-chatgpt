@@ -26,11 +26,15 @@ intents = discord.Intents.default()
 intents.message_content = True
 
 
+client = discord.Client(intents=intents)
+
 def run_discord_bot():
     # Change your token here
-    TOKEN = os.getenv("DISCORD_TOKEN")
-    client = discord.Client(intents=intents)
+    global client
+    if client == None:
+      client = discord.Client(intents=intents)
 
+    TOKEN = os.getenv("DISCORD_TOKEN")
     @client.event
     async def on_ready():
         print(f'{client.user} is now running!')
