@@ -49,4 +49,11 @@ def run_discord_bot():
         await interaction.response.defer(ephemeral=is_private)
         await send_message(interaction, user_message)
 
+    @client.tree.command(name="reset", description="Complete reset gptChat conversation history")
+    async def reset(interaction: discord.Interaction):
+        responses.chatbot.reset_chat()
+        await interaction.response.defer(ephemeral=False)
+        await interaction.followup.send("> **Info: I have forgotten everything.**")
+        print("The CHAT BOT has been successfully reset")
+
     client.run(TOKEN)
