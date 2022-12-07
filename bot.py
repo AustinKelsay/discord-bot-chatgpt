@@ -8,8 +8,8 @@ SEND_MESSAGE_DELAY = 1
 
 
 async def send_message(message, user_message, is_private):
-    # Send a typing indicator to the channel
-    await message.channel.send_typing()
+    # Make our bot start typing to give the illusion of it thinking
+    await message.channel.trigger_typing()
 
     # Get the response for the user's message
     response = responses.handle_response(user_message)
