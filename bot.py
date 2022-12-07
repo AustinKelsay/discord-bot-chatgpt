@@ -1,7 +1,10 @@
 import discord
 import responses
 import os
+import dotenv
 import asyncio
+
+dotenv.load_dotenv()
 
 
 SEND_MESSAGE_DELAY = 1
@@ -12,12 +15,7 @@ async def send_message(message, user_message, is_private):
         # Get the response for the user's message
         response = responses.handle_response(user_message)
 
-        # Split the response into smaller chunks if necessary
-        if len(response) > 2000:
-            response_chunks = [response[i:i+2000]
-                               for i in range(0, len(response), 2000)]
-        else:
-            response_chunks = [response]
+        response_chunks = [response]
 
         # Send each chunk of the response, separated by a delay
         for chunk in response_chunks:

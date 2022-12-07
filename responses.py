@@ -1,5 +1,8 @@
 from revChatGPT.revChatGPT import Chatbot
 import os
+import dotenv
+
+dotenv.load_dotenv()
 
 config = {
     "email": os.getenv("EMAIL"),
