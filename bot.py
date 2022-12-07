@@ -21,9 +21,10 @@ async def run_blocking(blocking_func: typing.Callable, *args, **kwargs) -> typin
 
 async def send_message(message, user_message, is_private):
     try:
+        await run_blocking(blocking_func, 1, 2, c=3)
+
         response = responses.handle_response(user_message)
         # Run a blocking function in a non-blocking way before sending the response
-        await run_blocking(blocking_func, 1, 2, c=3)
         if len(response) > 2000:
             # Split the response into smaller chunks of no more than 2000 characters each
             response_chunks = [response[i:i+2000]
