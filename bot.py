@@ -21,10 +21,10 @@ def run_discord_bot():
     async def on_ready():
         print(f'{client.user} is now running!')
 
+    # Listen for a dm
     @client.event
-    async def send_message(message, user_message, is_private):
-        # Get the response for the user's message
-        response = responses.handle_response(user_message)
+    async def on_message(message):
+        response = responses.handle_response(message.content)
 
         try:
             # Send the response to the user
@@ -34,5 +34,4 @@ def run_discord_bot():
             print("my exception", e)
             await message.channel.send("Sorry I timed out trying to send you a message. Please try again.")
 
-    # Remember to run your bot with your personal TOKEN
     client.run(TOKEN)
