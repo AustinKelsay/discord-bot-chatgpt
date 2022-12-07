@@ -1,10 +1,7 @@
 import discord
 import responses
 import os
-import dotenv
 import asyncio
-
-dotenv.load_dotenv()
 
 
 SEND_MESSAGE_DELAY = 1
