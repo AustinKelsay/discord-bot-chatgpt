@@ -21,6 +21,7 @@ def run_discord_bot():
     async def on_ready():
         print(f'{client.user} is now running!')
 
+    @client.event
     async def send_message(message, user_message, is_private):
         # Get the response for the user's message
         response = responses.handle_response(user_message)
