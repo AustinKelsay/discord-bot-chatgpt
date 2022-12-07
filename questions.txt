@@ -1,2 +1,25 @@
 How to print in JavaScript
 How to print in JavaScript
+How to print in JavaScript?
+How to print in JavaScript?
+I keep getting this error from discord about my hosted bot, what does this mean?
+
+"discord.gateway: Shard ID None heartbeat blocked for more than 40 seconds."
+Here is my bots code, can you refactor it to fix this?
+
+"async def send_message(message, user_message, is_private):
+    try:
+        response = responses.handle_response(user_message)
+        if len(response) > 2000:
+            # Split the response into smaller chunks of no more than 2000 characters each
+            response_chunks = [response[i:i+2000]
+                               for i in range(0, len(response), 2000)]
+            for chunk in response_chunks:
+                # Send each chunk separately
+                await message.author.send(chunk) if is_private else await message.channel.send(chunk)
+        else:
+            await message.author.send(response) if is_private else await message.channel.send(response)
+
+    except Exception as e:
+        print("my exception", e)"
+How to print in JavaScript?

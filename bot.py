@@ -1,41 +1,36 @@
 import discord
 import responses
 import os
-import time
-import typing
-import functools
+import asyncio
 
 
-def blocking_func(a, b, c=1):
-    """A very blocking function"""
-    time.sleep(a + b + c)
-    return "some stuff"
-
-
-async def run_blocking(blocking_func: typing.Callable, *args, **kwargs) -> typing.Any:
-    """Runs a blocking function in a non-blocking way"""
-    func = functools.partial(
-        blocking_func, *args, **kwargs)  # `run_in_executor` doesn't support kwargs, `functools.partial` does
-    return await client.loop.run_in_executor(None, func)
+SEND_MESSAGE_DELAY = 1
 
 
 async def send_message(message, user_message, is_private):
     try:
-        # await run_blocking(blocking_func, 1, 2, c=3)
-
+        # Get the response for the user's message
         response = responses.handle_response(user_message)
-        # Run a blocking function in a non-blocking way before sending the response
-        # if len(response) > 2000:
-        #     # Split the response into smaller chunks of no more than 2000 characters each
-        #     response_chunks = [response[i:i+2000]
-        #                        for i in range(0, len(response), 2000)]
-        #     for chunk in response_chunks:
-        #         # Send each chunk separately
-        #         await message.author.send(chunk) if is_private else await message.channel.send(chunk)
-        # else:
-        await message.author.send(response) if is_private else await message.channel.send(response)
+
+        # Split the response into smaller chunks if necessary
+        if len(response) > 2000:
+            response_chunks = [response[i:i+2000]
+                               for i in range(0, len(response), 2000)]
+        else:
+            response_chunks = [response]
+
+        # Send each chunk of the response, separated by a delay
+        for chunk in response_chunks:
+            if is_private:
+                await message.author.send(chunk)
+            else:
+                await message.channel.send(chunk)
+
+            # Wait before sending the next chunk
+            await asyncio.sleep(SEND_MESSAGE_DELAY)
 
     except Exception as e:
+        # Print any errors that occur
         print("my exception", e)
 
 intents = discord.Intents.default()
