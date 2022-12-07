@@ -1,4 +1,6 @@
 import discord
+from discord.ext import commands
+from discord.ext.commands import Bot
 import responses
 import os
 import asyncio
@@ -7,10 +9,15 @@ import asyncio
 SEND_MESSAGE_DELAY = 1
 
 
-async def send_message(message, user_message, is_private):
-    # Make our bot start typing to give the illusion of it thinking
-    await message.channel.trigger_typing()
+@Bot.command()
+async def mycommand(ctx):
+    async with ctx.typing():
+        # do expensive stuff here
+        await asyncio.sleep(10)
+    await ctx.send('done!')
 
+
+async def send_message(message, user_message, is_private):
     # Get the response for the user's message
     response = responses.handle_response(user_message)
 
