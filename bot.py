@@ -1,20 +1,6 @@
 import discord
-from discord.ext import commands
-from discord.ext.commands import Bot
 import responses
 import os
-import asyncio
-
-
-SEND_MESSAGE_DELAY = 1
-
-
-@Bot.command()
-async def mycommand(ctx):
-    async with ctx.typing():
-        # do expensive stuff here
-        await asyncio.sleep(10)
-    await ctx.send('done!')
 
 
 async def send_message(message, user_message, is_private):
