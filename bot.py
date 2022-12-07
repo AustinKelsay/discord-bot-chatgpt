@@ -8,11 +8,11 @@ SEND_MESSAGE_DELAY = 1
 
 
 async def send_message(message, user_message, is_private):
-    # Get the response for the user's message
-    response = responses.handle_response(user_message)
-
     # Send a typing indicator to the channel
     await message.channel.send_typing()
+
+    # Get the response for the user's message
+    response = responses.handle_response(user_message)
 
     try:
         # Send the response to the user
@@ -20,6 +20,7 @@ async def send_message(message, user_message, is_private):
     except Exception as e:
         # Print any errors that occur
         print("my exception", e)
+        await message.channel.send("Sorry I timed out trying to send you a message. Please try again.")
 
 intents = discord.Intents.default()
 intents.message_content = True
