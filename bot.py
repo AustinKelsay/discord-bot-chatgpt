@@ -8,12 +8,12 @@ SEND_MESSAGE_DELAY = 1
 
 
 async def send_message(message, user_message, is_private):
+    # Get the response for the user's message
+    response = responses.handle_response(user_message)
+
     try:
-        # Get the response for the user's message
-        response = responses.handle_response(user_message)
-
+        # Send the response to the user
         await message.author.send(response)
-
     except Exception as e:
         # Print any errors that occur
         print("my exception", e)
