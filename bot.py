@@ -30,7 +30,13 @@ is_private = True
 def run_discord_bot():
     TOKEN = os.getenv("DISCORD_TOKEN")
 
+    # Set the number of consecutive questions before resetting
+    RESET_THRESHOLD = 5
+
     client = commands.Bot(command_prefix='!', intents=intents)
+
+    # Store the number of consecutive questions in a variable
+    consecutive_questions = 0
 
     @client.event
     async def on_ready():
@@ -39,6 +45,8 @@ def run_discord_bot():
 
     @client.tree.command(name="chat", description="Have a chat with chatGPT")
     async def chat(interaction: discord.Interaction, *, message: str):
+        global consecutive_questions
+
         print('Chat command received', message)
         if interaction.user == client.user:
             return
@@ -49,11 +57,17 @@ def run_discord_bot():
         await interaction.response.defer(ephemeral=is_private)
         await send_message(interaction, user_message)
 
-    @client.tree.command(name="reset", description="Complete reset gptChat conversation history")
-    async def reset(interaction: discord.Interaction):
-        responses.chatbot.reset_chat()
-        await interaction.response.defer(ephemeral=False)
-        await interaction.followup.send("> **Info: I have forgotten everything.**")
-        print("The CHAT BOT has been successfully reset")
+        # Increment the number of consecutive questions
+        consecutive_questions += 1
+
+        # Check if the threshold has been reached
+        if consecutive_questions >= RESET_THRESHOLD:
+            # Reset the conversation history and reset the counter
+            responses.chatbot.reset_chat()
+            consecutive_questions = 0
+
+            # Send a followup message
+            await interaction.followup.send("> **Info: I have forgotten everything.**")
+            print("The CHAT BOT has been successfully reset")
 
     client.run(TOKEN)
