@@ -40,6 +40,8 @@ def run_discord_bot():
 
     client = commands.Bot(command_prefix='!', intents=intents)
 
+    consecutive_questions = 0
+
     @client.event
     async def on_ready():
         await client.tree.sync()
@@ -54,8 +56,6 @@ def run_discord_bot():
         # Respond to direct messages only
         if isinstance(message.channel, discord.DMChannel):
             # Store the number of consecutive questions in a variable
-            consecutive_questions = 0
-
             print('Direct message received:', message.content)
             username = str(message.author)
             user_message = message.content
@@ -64,7 +64,9 @@ def run_discord_bot():
             await send_message(message, user_message)
 
             # Increment the number of consecutive questions
+            global consecutive_questions
             consecutive_questions += 1
+
             print('consecutive', consecutive_questions)
             # Check if the threshold has been reached
             if consecutive_questions >= RESET_THRESHOLD:
