@@ -65,7 +65,7 @@ def run_discord_bot():
 
             # Increment the number of consecutive questions
             consecutive_questions += 1
-
+            print('consecutive', consecutive_questions)
             # Check if the threshold has been reached
             if consecutive_questions >= RESET_THRESHOLD:
                 # Reset the conversation history and reset the counter
