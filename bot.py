@@ -10,6 +10,7 @@ async def send_message(message, user_message):
         await message.channel.typing()
         # Get the chatbot's response to the user's message
         response = responses.handle_response(user_message)
+        print(response)
 
         # Send the chatbot's response, breaking it into multiple messages if necessary
         if len(response) > 1900:
