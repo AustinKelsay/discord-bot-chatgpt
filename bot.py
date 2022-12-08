@@ -1,5 +1,4 @@
 import discord
-from discord import app_commands
 from discord.ext import commands
 import responses
 import os
@@ -7,9 +6,8 @@ import os
 
 async def send_message(message, user_message):
     try:
-        # Send the user's message
-        await message.channel.send(f"> **{user_message}** - <@{message.author.id}>")
-
+        # Start typing while we wait for the response
+        await message.channel.typing()
         # Get the chatbot's response to the user's message
         response = responses.handle_response(user_message)
 
