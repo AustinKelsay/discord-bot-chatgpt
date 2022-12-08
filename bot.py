@@ -63,6 +63,7 @@ def run_discord_bot():
     while True:
         # reset the chatbot conversation
         responses.chatbot.reset_chat()
+        print('resetting')
 
         # sleep for 5 minutes
         time.sleep(300)
