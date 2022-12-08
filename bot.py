@@ -3,7 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 import responses
 import os
-import time
+import asyncio
 
 
 async def send_message(message, user_message):
@@ -60,10 +60,15 @@ def run_discord_bot():
 
     client.run(TOKEN)
 
+    # Run the reset_chat() function every 2 minutes
+    asyncio.get_event_loop().run_until_complete(reset_chat_loop())
+
+
+async def reset_chat_loop():
     while True:
         # reset the chatbot conversation
         responses.chatbot.reset_chat()
         print('resetting')
 
-        # sleep for 5 minutes
-        time.sleep(300)
+        # sleep for 2 minutes
+        await asyncio.sleep(120)
