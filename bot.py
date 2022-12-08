@@ -7,20 +7,25 @@ import os
 
 async def send_message(message, user_message):
     try:
-        response = '> **' + user_message + '** - <@' + \
-            str(message.user.id) + '>\n\n' + \
-            responses.handle_response(user_message)
+        # Send the user's message
+        await message.channel.send(f"> **{user_message}** - <@{message.author.id}>")
+
+        # Get the chatbot's response to the user's message
+        response = responses.handle_response(user_message)
+
+        # Send the chatbot's response, breaking it into multiple messages if necessary
         if len(response) > 1900:
-            # Split the response into smaller chunks of no more than 1900 characters each(Discord limit is 2000 per chunk)
+            # Split the response into smaller chunks of no more than 1900 characters each (Discord limit is 2000 per chunk)
             response_chunks = [response[i:i+1900]
                                for i in range(0, len(response), 1900)]
             for chunk in response_chunks:
-                await message.followup.send(chunk)
+                await message.channel.send(chunk)
         else:
-            await message.followup.send(response)
+            await message.channel.send(response)
     except Exception as e:
-        await message.followup.send("> **Error: There are something went wrong. Please try again later!**")
+        await message.channel.send("> **Error: There are something went wrong. Please try again later!**")
         print(e)
+
 
 intents = discord.Intents.default()
 intents.message_content = True
