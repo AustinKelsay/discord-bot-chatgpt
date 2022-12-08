@@ -3,6 +3,7 @@ from discord import app_commands
 from discord.ext import commands
 import responses
 import os
+import time
 
 
 async def send_message(message, user_message):
@@ -35,12 +36,7 @@ is_private = True
 def run_discord_bot():
     TOKEN = os.getenv("DISCORD_TOKEN")
 
-    # Set the number of consecutive questions before resetting
-    RESET_THRESHOLD = 5
-
     client = commands.Bot(command_prefix='!', intents=intents)
-
-    consecutive_questions = 0
 
     @client.event
     async def on_ready():
@@ -55,7 +51,6 @@ def run_discord_bot():
 
         # Respond to direct messages only
         if isinstance(message.channel, discord.DMChannel):
-            # Store the number of consecutive questions in a variable
             print('Direct message received:', message.content)
             username = str(message.author)
             user_message = message.content
@@ -63,19 +58,11 @@ def run_discord_bot():
             print(f"{username} said: '{user_message}' ({channel})")
             await send_message(message, user_message)
 
-            # Increment the number of consecutive questions
-            global consecutive_questions
-            consecutive_questions += 1
-
-            print('consecutive', consecutive_questions)
-            # Check if the threshold has been reached
-            if consecutive_questions >= RESET_THRESHOLD:
-                # Reset the conversation history and reset the counter
-                responses.chatbot.reset_chat()
-                consecutive_questions = 0
-
-                # Send a followup message
-                await message.channel.send("> **Info: I have forgotten everything.**")
-                print("The CHAT BOT has been successfully reset")
-
     client.run(TOKEN)
+
+    while True:
+        # reset the chatbot conversation
+        responses.chatbot.reset_chat()
+
+        # sleep for 5 minutes
+        time.sleep(300)
