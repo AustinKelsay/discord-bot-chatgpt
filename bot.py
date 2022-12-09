@@ -37,6 +37,9 @@ def run_discord_bot():
 
     client = commands.Bot(command_prefix='!', intents=intents)
 
+    # Store a reference to the user's discord.User object
+    user = None
+
     async def reset_chat_async():
         # Reset the chat
         responses.chatbot.reset_chat()
@@ -44,9 +47,10 @@ def run_discord_bot():
         # Send an interaction to the user
         interaction = discord.Interaction(
             type='message',
-            text='The chat has been reset. Sadly I must reset every 5 minutes or discord will time me out'
+            text='The chat has been reset. You can start a new conversation with me now.'
         )
-        await message.author.send(interaction)
+        if user:
+            await user.send(interaction)
 
         # Schedule the next call to reset_chat_async after 5 minutes
         asyncio.get_event_loop().call_later(300, reset_chat_async)
