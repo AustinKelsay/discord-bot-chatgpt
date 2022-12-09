@@ -59,4 +59,10 @@ def run_discord_bot():
 
             responses.chatbot.reset_chat()
 
-    client.run(TOKEN)
+    # Continuously check for a connection to the Discord API
+    # and reconnect if the connection is lost
+    while True:
+        try:
+            client.run(TOKEN)
+        except ConnectionError:
+            client.connect()
