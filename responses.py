@@ -1,4 +1,4 @@
-from revChatGPT.revChatGPT import Chatbot
+from asyncChatGPT.asyncChatGPT import Chatbot
 import os
 
 config = {
@@ -13,8 +13,9 @@ chatbot = Chatbot(config, conversation_id=None)
 chatbot.refresh_session()
 
 
-def handle_response(prompt) -> str:
-    response = chatbot.get_chat_response(prompt, output="text")
-    responseMessage = response["message"]
+async def handle_response(prompt) -> str:
+    chatbot.refresh_session()
+    response = await chatbot.get_chat_response(prompt, output="text")
+    responseMessage = response['message']
 
     return responseMessage
