@@ -37,7 +37,7 @@ def run_discord_bot():
 
     client = commands.Bot(command_prefix='!', intents=intents)
 
-    async def reset_chat_async(message):
+    async def reset_chat_async():
         # Reset the chat
         responses.chatbot.reset_chat()
 
