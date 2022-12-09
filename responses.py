@@ -10,7 +10,6 @@ if os.getenv("SESSION"):
     config.update(session_token=os.getenv("SESSION"))
 
 chatbot = Chatbot(config, conversation_id=None)
-chatbot.refresh_session()
 
 
 async def handle_response(prompt) -> str:
